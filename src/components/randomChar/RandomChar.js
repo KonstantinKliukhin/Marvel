@@ -17,7 +17,7 @@ class RandomChar extends Component {
         loading: false,
         error: false,
     }
-
+    
     marvelService = new MarvelService();
 
     toCorrectDescription = (char) => {

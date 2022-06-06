@@ -17,12 +17,12 @@ class RandomChar extends Component {
         loading: false,
         error: false,
     }
-    
+
     marvelService = new MarvelService();
 
     toCorrectDescription = (char) => {
         let descr = char.description;
-        char.description = (descr.length > 227) ?
+        char.description = (descr.length > 225) ?
                          `${descr.slice(0, 227)}...` :
                          descr || 'No information about this Character ('
         return char;
@@ -32,7 +32,8 @@ class RandomChar extends Component {
         this.setState
         ({
           char, 
-          loading: false
+          loading: false,
+          error: false
         });
     }
 
@@ -47,7 +48,10 @@ class RandomChar extends Component {
         if (this.state.loading) {
             return;
         }
-        this.setState({loading: true});
+        this.setState({
+            loading: true,
+            error: false,
+        });
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 
         this.marvelService.getCharacter(id)

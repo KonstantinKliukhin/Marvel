@@ -1,55 +1,46 @@
-import { Component } from "react";
-
+import { useState } from "react";
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundery from "../errorBoundary/ErrorBoundery";
+import SingleComic from "../singleComic/SingleComic";
+import ComicsList from "../comicsList/ComicsList";
+import AppBanner from "../appBanner/AppBanner";
 
 
 import decoration from '../../resources/img/vision.png';
 
-class App extends Component {
- 
-    state = {
-        selectedChar: null,
+const App = () => {
+    const [selectedChar, setSelectedChar] = useState(null);
+
+    const onCharSelected = (id) => {
+        setSelectedChar(id);
     }
 
-    onCharSelected = (id) => {
-        this.setState({selectedChar: id});
-    }
-
-    DynamicGreting = (props) => {
-        return(
-            <div className={"mb-3 p-3 border border-" + props.color}>
-
-                
-            </div>
-        )
-    }
-
-    render() {
-
-        return (
-            <div className="app">
-                <AppHeader />
-                <main>
+    return (
+        <div className="app">
+            <AppHeader/>
+            <AppBanner/>
+            <main>
+                {/* <ErrorBoundery>
+                    <ComicsList/>
+                </ErrorBoundery> */}
+                <ErrorBoundery>
+                    <RandomChar/>
+                </ErrorBoundery>
+                <div className="char__content">
                     <ErrorBoundery>
-                        <RandomChar/>
+                        <CharList onCharSelected={onCharSelected}/>
                     </ErrorBoundery>
-                    <div className="char__content">
-                        <ErrorBoundery>
-                            <CharList onCharSelected={this.onCharSelected}/>
-                        </ErrorBoundery>
-                        <ErrorBoundery>
-                            <CharInfo charId={this.state.selectedChar}/>
-                        </ErrorBoundery>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
-                </main>
-            </div>
-        )
-    }
+                    <ErrorBoundery>
+                        <CharInfo charId={selectedChar}/>
+                    </ErrorBoundery>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision"/>
+            </main>
+        </div>
+    )
 }
 
 export default App;

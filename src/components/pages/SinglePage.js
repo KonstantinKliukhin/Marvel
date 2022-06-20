@@ -1,29 +1,35 @@
 import {useParams} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/marvelService';
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import Spinner from '../spinner/Spinner';
 import AppBanner from '../appBanner/AppBanner';
+import setContent from '../../utils/setContent';
 
 
 const SinglePage = ({Component, dataType}) => {
     const {id} = useParams();
     const [data, setData] = useState(null);
-    const {loading, error, getComic, getCharacter, clearError} = useMarvelService();
+    const {process, setProcess, getComic, getCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateData();
+        // eslint-disable-next-line
     }, [])
 
     const updateData = () => {
         clearError();
         switch(dataType) {
             case 'comic':
-                getComic(id).then(onDataLoaded);
+                getComic(id)
+                    .then(onDataLoaded)
+                    .then(() => setProcess('confirmed'));
                 break;
             case 'char':
-                getCharacter(id).then(onDataLoaded);
+                getCharacter(id)
+                    .then(onDataLoaded)
+                    .then(() => setProcess('confirmed'));
                 break;
+            default:
+                throw new Error('page detection error')
         }
     }
 
@@ -31,17 +37,10 @@ const SinglePage = ({Component, dataType}) => {
         setData(data);
     }
 
-    
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error || !data) ?  <Component data={data}/> : null;
-
     return (
     <>
         <AppBanner/>
-        {content}
-        {spinner}
-        {errorMessage}
+        {setContent(process, Component, data)}
     </>
     )
 }

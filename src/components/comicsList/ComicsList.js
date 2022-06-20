@@ -5,20 +5,38 @@ import useMarvelService from '../../services/marvelService';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from "react-router-dom";
 
+const setContent = (process,Component, newItemLoading) => {
+    switch(process) {
+        case 'waiting':
+            return <Spinner/>;
+        case 'loading': 
+            return newItemLoading ? <Component/> : <Spinner/>;
+        case 'confirmed':
+            return <Component/> 
+        case 'error':
+            return <ErrorMessage/>
+        default:
+            throw new Error('unexpected process state');
+    }
+}
+
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]);
-    const {loading, error, getAllComics} = useMarvelService();
+    const {process, setProcess, getAllComics} = useMarvelService();
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [comicsEnded, setComicsEnded] = useState(false);
     const itemRefs = useRef([]);
 
     useEffect(() => {
         onRequest(0, true);
+        // eslint-disable-next-line
     }, [])
 
     const onRequest = (offset, initial) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
-        getAllComics(offset).then(onComicsLoaded);
+        getAllComics(offset)
+            .then(onComicsLoaded)
+            .then(() => setProcess('confirmed'));
     }
 
     const onComicsLoaded = (newComicsList) => {
@@ -66,16 +84,10 @@ const ComicsList = () => {
         )
     }
 
-    const items = renderItems(comicsList);
-    const spinner = loading && !newItemLoading ? <Spinner/>: null;
-    const errorMessage = error ? <ErrorMessage/> : null;
-
     return (
         
         <div className="comics__list">
-            {items}
-            {spinner}
-            {errorMessage}
+            {setContent(process, () => renderItems(comicsList), newItemLoading)}
             <button disabled={newItemLoading} 
                     onClick={() => onRequest(comicsList.length)} 
                     className="button button__main button__long"

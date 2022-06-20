@@ -2,10 +2,25 @@ import './charList.scss';
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 import useMarvelService from '../../services/marvelService';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
+
+
+const setContent = (process,Component, newItemLoading) => {
+    switch(process) {
+        case 'waiting':
+            return <Spinner/>;
+        case 'loading': 
+            return newItemLoading ? <Component/> : <Spinner/>;
+        case 'confirmed':
+            return <Component/> 
+        case 'error':
+            return <ErrorMessage/>
+        default:
+            throw new Error('unexpected process state');
+    }
+}
 
 
 const CharList = (props) => {
@@ -13,11 +28,12 @@ const CharList = (props) => {
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [charEnded, setCharEnded] = useState(false);
     const itemRefs = useRef([]);
-    const {loading, error, getAllCharacters} = useMarvelService();
+    const {getAllCharacters, process, setProcess} = useMarvelService();
 
 
     useEffect(() => {
         onRequest(0, true);
+        // eslint-disable-next-line
     }, []);
 
     const onCharLoaded = (newCharList) => {
@@ -32,13 +48,13 @@ const CharList = (props) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
                           .then(onCharLoaded)
+                          .then(() => setProcess('confirmed'));
     }
 
     const focusOnItem = (i) => {
         itemRefs.current.forEach((elem) => elem.classList.remove('char__item_selected'));
         itemRefs.current[i].classList.add('char__item_selected');
         itemRefs.current[i].focus();
-        console.log(document.documentElement)
     }
 
 
@@ -51,14 +67,11 @@ const CharList = (props) => {
             }
 
             return (
-                <CSSTransition 
-                    classNames='char__item'
-                    timeout={500} 
-                    key={id}>
                     <li  
+                        className='char__item' 
+                        key={id}
                         tabIndex={0}
                         ref={el => itemRefs.current[i] = el} 
-                        className={'char__item'} 
                         onClick = {() => {
                             props.onCharSelected(id)
                             focusOnItem(i)
@@ -72,28 +85,25 @@ const CharList = (props) => {
                         <img src={thumbnail} alt={name} style={imgStyle}/>
                         <div className="char__name">{name}</div>
                     </li>
-                </CSSTransition>
             );
         })
 
         return (
                 <ul className='char__grid'>
-                    <TransitionGroup component={null}>
                         {items}
-                    </TransitionGroup>
                 </ul>
             
         )
     }
 
-    const items = renderItems(charList);
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
+    const elements = useMemo(() => {
+        return setContent(process, () => renderItems(charList), newItemLoading);
+        // eslint-disable-next-line
+    }, [process])
+
     return (
         <div className="char__list">
-            {errorMessage}
-            {spinner}
-            {items}
+            {elements}
             <button disabled={newItemLoading} 
                     onClick={() => onRequest(charList.length)} 
                     className="button button__main button__long"

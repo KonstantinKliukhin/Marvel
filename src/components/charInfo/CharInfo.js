@@ -6,14 +6,14 @@ import Skeleton from '../skeleton/Skeleton';
 import useMarvelService from '../../services/marvelService';
 import PropTypes from 'prop-types';
 
+
 const CharInfo = ({charId}) => {
     const [char, setChar] = useState(null);
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar();
     }, [charId])
-
-    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     const updateChar = () => {
         if (!charId) {
@@ -52,8 +52,8 @@ const View = ({char: {name, description, thumbnail, homepage, wiki, comics}}) =>
     }
 
     return (
-        <>
-            <div className="char__basics">
+            <div style={{position: 'sticky'}}>
+                <div className="char__basics">
                     <img style={imgStyle} src={thumbnail} alt={name}/>
                     <div>
                         <div className="char__info-name">{name}</div>
@@ -81,7 +81,7 @@ const View = ({char: {name, description, thumbnail, homepage, wiki, comics}}) =>
                         );
                     })}
                 </ul>
-        </>
+            </div>
     )
 }
 

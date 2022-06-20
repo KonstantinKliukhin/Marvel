@@ -4,14 +4,16 @@ import Spinner from "../spinner/Spinner";
 import useMarvelService from '../../services/marvelService';
 import {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
+
 
 
 const CharList = (props) => {
     const [charList, setCharList] = useState([]);
-    const {loading, error, getAllCharacters} = useMarvelService();
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [charEnded, setCharEnded] = useState(false);
     const itemRefs = useRef([]);
+    const {loading, error, getAllCharacters} = useMarvelService();
 
 
     useEffect(() => {
@@ -36,7 +38,9 @@ const CharList = (props) => {
         itemRefs.current.forEach((elem) => elem.classList.remove('char__item_selected'));
         itemRefs.current[i].classList.add('char__item_selected');
         itemRefs.current[i].focus();
+        console.log(document.documentElement)
     }
+
 
     function renderItems(arr) {
         const items = arr.map(({id, name, thumbnail}, i) => {
@@ -47,30 +51,38 @@ const CharList = (props) => {
             }
 
             return (
-                <li key={id} 
-                    tabIndex={0}
-                    ref={el => itemRefs.current[i] = el} 
-                    className={'char__item'} 
-                    onClick = {() => {
-                        props.onCharSelected(id)
-                        focusOnItem(i)
-                        }}
-                    onKeyDown={(e) => {
-                        if (e.key === ' ' || e.key === 'Enter') {
-                            props.onCharSelected(id);
+                <CSSTransition 
+                    classNames='char__item'
+                    timeout={500} 
+                    key={id}>
+                    <li  
+                        tabIndex={0}
+                        ref={el => itemRefs.current[i] = el} 
+                        className={'char__item'} 
+                        onClick = {() => {
+                            props.onCharSelected(id)
                             focusOnItem(i)
-                        }
-                    }}>
-                    <img src={thumbnail} alt={name} style={imgStyle}/>
-                    <div className="char__name">{name}</div>
-                </li>
+                            }}
+                        onKeyDown={(e) => {
+                            if (e.key === ' ' || e.key === 'Enter') {
+                                props.onCharSelected(id);
+                                focusOnItem(i)
+                            }
+                        }}>
+                        <img src={thumbnail} alt={name} style={imgStyle}/>
+                        <div className="char__name">{name}</div>
+                    </li>
+                </CSSTransition>
             );
         })
 
         return (
-            <ul className='char__grid'>
-                {items}
-            </ul>
+                <ul className='char__grid'>
+                    <TransitionGroup component={null}>
+                        {items}
+                    </TransitionGroup>
+                </ul>
+            
         )
     }
 

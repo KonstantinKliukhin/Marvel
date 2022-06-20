@@ -3,6 +3,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 import useMarvelService from '../../services/marvelService';
 import { useState, useEffect, useRef } from 'react';
+import { Link } from "react-router-dom";
 
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]);
@@ -28,15 +29,13 @@ const ComicsList = () => {
     }
 
     function renderItems(arr) {
-        const items = arr.map(({id, title, thumbnail, price, detailUrl}, i) => {
+        const items = arr.map(({id, title, thumbnail, price}, i) => {
 
             const imgStyle = {objectFit: 'cover'};
         
             if (thumbnail && thumbnail.includes('image_not_available.jpg')) {
                 imgStyle.objectFit = 'unset';
             }
-
-            const correctPrice = price ? `${price} $` : 'FREE';
 
             return (
                 <li key={i} 
@@ -51,11 +50,11 @@ const ComicsList = () => {
                             itemRefs.current[i].focus();
                         }
                     }}>
-                    <a href={detailUrl}>
+                    <Link to={`${id}`}>
                         <img src={thumbnail} alt={title} style={imgStyle} className="comics__item-img"/>
                         <div className="comics__item-name">{title}</div>
-                        <div className="comics__item-price">{correctPrice}</div>
-                    </a>
+                        <div className="comics__item-price">{price}</div>
+                    </Link>
                 </li>
             );
         })
@@ -72,6 +71,7 @@ const ComicsList = () => {
     const errorMessage = error ? <ErrorMessage/> : null;
 
     return (
+        
         <div className="comics__list">
             {items}
             {spinner}

@@ -5,22 +5,14 @@ class ErrorBoundery extends Component {
         error: false
     }
 
-    // componentDidCatch(error, errorInfo) {
-    //     this.setState({
-    //         error: true
-    //     })
-    // }
-    
     static getDerivedStateFromError(error) {
         return {error: true};
     }
-    
 
     render() {
         if (this.state.error) {
             return <ErrorMessage/>
         }
-
         return this.props.children;
     }
 }

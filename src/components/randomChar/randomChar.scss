@@ -6,7 +6,7 @@
     grid-template-columns: repeat(2, 50%);
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
     align-items: center;
-    @include max-w(769) {
+    @include max-w(1025) {
         grid-template-columns: 1fr;
 
         grid-template-rows: repeat(2, auto);
@@ -16,7 +16,7 @@
         display: grid;
         grid-template-columns: 180px auto;
         column-gap: 30px;
-        @include max-w(769) {
+        @include max-w(550) {
             grid-template-rows: 180px auto;
             grid-template-columns: 1fr;
             justify-items: center;
@@ -47,8 +47,9 @@
         overflow: hidden;
    }
     &__btns {
+        align-self: end;
         a:nth-child(1) {
-            margin-right: 5%;
+            margin-right: 10px;
             @include max-w(769) {
                 margin-right: 15px;
             }

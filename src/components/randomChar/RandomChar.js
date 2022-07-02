@@ -79,10 +79,10 @@ const View = ({data: {name, description, thumbnail, homepage, wiki}}) => {
                     {description}
                 </p>
                 <div className="randomchar__btns">
-                    <a href={homepage}  rel="noreferrer" target='_blank' className="button button__main">
+                    <a href={homepage}  rel="noreferrer" target='_blank' className="button button__main button__small">
                         <div className="inner">homepage</div>
                     </a>
-                    <a href={wiki}  rel="noreferrer" target='_blank' className="button button__secondary">
+                    <a href={wiki}  rel="noreferrer" target='_blank' className="button button__secondary button__small">
                         <div className="inner">Wiki</div>
                     </a>
                 </div>

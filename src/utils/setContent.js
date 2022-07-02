@@ -3,7 +3,7 @@ import ErrorMessage from "../components/errorMessage/ErrorMessage";
 import Skeleton from "../components/skeleton/Skeleton";
 
 
-const setContent = (process,Component, data) => {
+const setContent = (process,Component, data, spinnerSize = '') => {
     switch(process) {
         case 'waiting':
             return <Skeleton/>;

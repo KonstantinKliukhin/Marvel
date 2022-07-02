@@ -1,67 +1,69 @@
 @import '../../style/variables.scss';
+@import '../../style/mixins.scss';
 
 .char {
     &__content {
         margin-top: 50px;
         display: grid;
-        grid-template-columns: 650px 425px;
-        column-gap: 25px;
+        grid-template-columns: 60% 38%;
+        column-gap: 2%;
         align-items: start;
+        @include max-w(825) {
+            grid-template-columns: 50% 48%;
+            padding-left: 10px;
+        }
     }
     &__grid {
         display: grid;
         grid-template-columns: repeat(3, 30%);
         column-gap: 25px;
         row-gap: 30px;
+        @include max-w (825) {
+            grid-template-columns: repeat(2, 48%);
+            column-gap: 15px;
+            row-gap: 20px;
+        }
+        @include max-w(426) {
+            grid-template-columns: 1fr;
+        }
     }
     &__item {
-        width: 200px;
-        height: 318px;
+        width: 100%;
+        height: 260px;
+        @include max-w(1025) {
+            height: 230px;
+        }
         background-color: $dark;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, .25);
-        padding: 15px;
         cursor: pointer;
         transition: transform 0.3s;
-        &-enter {
-            opacity: 0;
-            &-active {
-                opacity: 1;
-                transition: opacity 0.5s ease-in;
-
-            }
-            &-done {
-                opacity: 1;
-                transition: opacity 0.5s;
-            }
-        }
-        &-exit {
-            opacity: 1;
-            &-active {
-                opacity: 0;
-                transition: opacity 500ms ease-in;
-            }
-
-        } 
         img {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 65%;
             object-fit: cover;
-            transform: translate(-15px, -15px);
+            // transform: translate(-15px, -15px);
         }
         &_selected {
             box-shadow: 0 5px 20px $main-color;
             transform: translateY(-8px);
         }
 
-
-
-
     }
     &__name {
         font-weight: bold;
-        font-size: 22px;
+        font-size: 20px;
         line-height: 29px;
         text-transform: uppercase;
         color: #fff;
+        padding: 10px;
+        text-align: center;
+        overflow: hidden;
+        @include max-w(1200) {
+            padding: 5px;
+        }
+        @include max-w(1025) {
+            font-size: 18px;
+            line-height: 18px;
+        }
     }
 }

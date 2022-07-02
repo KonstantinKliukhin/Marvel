@@ -56,7 +56,7 @@ const CharSearchForm = () => {
                             type='text'
                             placeholder='Enter name'/>
                         <button
-                            className="button button__main"
+                            className="button button__main button__small"
                             type='submit'
                             disabled={process === 'loading'}>
                             <div className="inner">find</div>

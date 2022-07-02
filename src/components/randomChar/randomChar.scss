@@ -1,15 +1,27 @@
 @import '../../style/variables.scss';
+@import '../../style//mixins.scss';
 
 .randomchar {
     display: grid;
     grid-template-columns: repeat(2, 50%);
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
     align-items: center;
+    @include max-w(769) {
+        grid-template-columns: 1fr;
+
+        grid-template-rows: repeat(2, auto);
+    }
     &__block {
         padding: 40px 35px;
         display: grid;
         grid-template-columns: 180px auto;
         column-gap: 30px;
+        @include max-w(769) {
+            grid-template-rows: 180px auto;
+            grid-template-columns: 1fr;
+            justify-items: center;
+            padding: 20px 15px;
+        }
     }
     &__img {
         width: 180px;
@@ -18,9 +30,10 @@
     }
     &__info {
         display: grid;
-        grid-template-rows: minmax(29px, auto) 90px 38px;
+        grid-template-rows: auto auto auto;
         row-gap: 10px;
         padding-top: 3px;
+        justify-items: center;
     }
     &__name {
         font-weight: bold;
@@ -31,10 +44,14 @@
     &__descr {
         font-size: 14px;
         line-height: 18px;
+        overflow: hidden;
    }
     &__btns {
         a:nth-child(1) {
-            margin-right: 30px;
+            margin-right: 5%;
+            @include max-w(769) {
+                margin-right: 15px;
+            }
         }
     }
     &__static {
@@ -58,6 +75,7 @@
     &__decoration {
         position: absolute;
         bottom: 14px;
-        right: -37px;
+        right: 0px;
+        width: calc(35% + 2vw)
     }
 }

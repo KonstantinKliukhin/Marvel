@@ -17,8 +17,8 @@ const RandomChar = () =>{
 
     const toCorrectDescription = (char) => {
         let descr = char.description;
-        char.description = (descr.length > 225) ?
-                         `${descr.slice(0, 227)}...` :
+        char.description = (descr.length > 215) ?
+                         `${descr.slice(0, 215)}...` :
                          descr || 'No information about this Character ('
         return char;
     }

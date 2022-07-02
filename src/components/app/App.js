@@ -8,9 +8,9 @@ import Spinner from '../spinner/Spinner';
 const Page404 = lazy(() => import('../pages/404'));
 const MainPage = lazy(() => import('../pages/MainPaig'));
 const ComicsPage = lazy(() => import('../pages/ComicsPage'));
-const SinglePage = lazy(() => import('../pages/SinglePage'));
-const SingleComicLayout = lazy(() => import('../pages/singleComicLayout/SingleComicLayout'));
-const SingleCharLayout = lazy(() => import('../pages/singleCharLayout/SingleCharLayout'));
+const SinglePage = lazy(() => import('../pages/singlePage/SinglePage'));
+const SingleComicLayout = lazy(() => import('../pages/SingleComicLayout'));
+const SingleCharLayout = lazy(() => import('../pages/SingleCharLayout'));
 
 const App = () => {
 

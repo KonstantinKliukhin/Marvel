@@ -1,4 +1,5 @@
 @import '../../style/variables.scss';
+@import '../../style//mixins.scss';
 
 .char {
     &__info {
@@ -11,25 +12,54 @@
             font-size: 22px;
             line-height: 29px;
             text-transform: uppercase;
+            @include max-w(769) {
+                text-align: center;
+                padding: 5px;
+            }
+            @include max-w(550) {
+                font-size: 14px;
+                line-height: 20px;
+            }
         }
         .skeleton {
             margin-top: 30px;
+        }
+        @include max-w(769) {
+            padding: 10px;
         }
     }
     &__basics {
         display: grid;
         grid-template-columns: 150px auto;
         column-gap: 25px;
+        @include max-w(769) {
+            grid-template-rows: auto auto;
+            grid-template-columns: 100%;
+        }
         img {
             width: 150px;
             height: 150px;
             object-fit: cover;
+            @include max-w(769) {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
     &__btns {
         margin-top: 35px;
-        a:nth-child(2) {
+        display: grid;
+        grid-template-rows: repeat(2, auto);
+        justify-items: center;
+        row-gap: 10px;
+        @include max-w(769) {
             margin-top: 10px;
+            grid-template-rows: 1fr;
+            grid-template-columns: repeat(2, auto);
+        }
+        @include max-w(550) {
+            grid-template-rows: repeat(2, auto);
+            grid-template-columns: 1fr;
         }
     }
     &__descr {
@@ -45,6 +75,10 @@
         &-list {
             position: relative;
             margin-top: 10px;
+            @include max-w(769) {
+                font-size: 12px;
+                line-height: 14px;
+            }
         }
         &-item {
             width: 100%;
@@ -52,6 +86,10 @@
             line-height: 25px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             margin-top: 10px;
+            @include max-w(769) {
+                line-height: 14px;
+                margin-top: 5px;
+            }
         }
     }
     &__select {

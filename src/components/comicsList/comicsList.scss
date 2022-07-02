@@ -1,3 +1,5 @@
+@import '../../style/mixins.scss';
+
 .comics {
     &__list {
         margin-top: 45px;
@@ -7,6 +9,12 @@
         grid-template-columns: repeat(auto-fill, 225px);
         justify-content: space-between;
         row-gap: 55px;
+        @include max-w(550) {
+            grid-template-columns: repeat(auto-fill, 160px)
+        }
+        @include max-w(321) {
+            grid-template-columns: repeat(auto-fill, 140px)
+        }
     }
     &__item {
         transition: 0.3s transform;
@@ -14,12 +22,23 @@
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
             width: 225px;
             height: 345px;
+            @include max-w(550) {
+                width: 160px;
+                height: 285px;
+            }
+            @include max-w(321) {
+                width: 140px;
+                height: 260px;
+            }
         }
         &-name {
             margin-top: 10px;
             font-weight: bold;
             font-size: 14px;
             line-height: 18px;
+            @include max-w(550) {
+                max-width: 195px;
+            }
         }
         &-price {
             margin-top: 5px;
